@@ -12,3 +12,10 @@ Add dynamo DB
 =======================================================================================
 5. update the serverless.yml resorces section add the dynamo db details 
 6. Next we grant IAM permissions for 
+
+
+item : {
+    trainingId: "001",
+    trainingName: "node js" 
+    
+}
