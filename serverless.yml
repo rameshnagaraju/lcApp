@@ -1,0 +1,67 @@
+service: trainingwoswagger
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    AWS_DEPLOY_REGION: ${self:provider.region}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
+functions:
+  createTraining:
+    handler: infNikithaFunc.createTraining
+    events:
+      - http:
+          method: POST
+          path: /trainings
+          private: false
+
+  getTraining:
+    handler: infNikithaFunc.getTraining
+    events:
+      - http:
+          method: GET
+          path: /trainings
+          private: false
+
+  updateTraining:
+    handler: infNikithaFunc.updateTraining
+    events:
+      - http:
+          method: PUT
+          path: /trainings/{trainingId}
+          private: false
+
+  deleteTraining:
+    handler: infNikithaFunc.deleteTraining
+    events:
+      - http:
+          method: Delete
+          path: /trainings/{trainingId}
+          private: false
+
+resources:
+  Resources:
+    infNikithaTrainingTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        AttributeDefinitions:
+          - AttributeName: trainingId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: trainingId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

@@ -1,0 +1,14 @@
+====================================================================================
+Create Empty crud functions
+=====================================================================================
+1.serverless create --template aws-nodejs --name training
+2.update the serverless.yml file 
+    2a.add custom table 
+    2b. Add provider details
+3. Now update the 4 functions in serverless.yml, and then add the same in handler.js     
+4. Do a sls deploy to verify that everything works all right.
+======================================================================================
+Add dynamo DB 
+=======================================================================================
+5. update the serverless.yml resorces section add the dynamo db details 
+6. Next we grant IAM permissions for 
