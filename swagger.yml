@@ -1,14 +1,11 @@
 swagger: "2.0"
 info:
-  title: training API
-  description: kkk
+  title: "Training API"
+  description: "REST API FOR TRAINING CRUD"
   version: "1.0"
-host: "petstore.swagger.io"
 basePath: "/"
-
 schemes:
   - "https"
-  - "http"
 paths:
   /training:
     post:
@@ -19,9 +16,7 @@ paths:
       operationId: "createTraining"
       consumes:
         - "application/json"
-        - "application/xml"
       produces:
-        - "application/xml"
         - "application/json"
       parameters:
         - in: "body"
@@ -32,53 +27,23 @@ paths:
             $ref: "#/definitions/Training"
       responses:
         200:
-          description: "successful operation"
-        405:
-          description: "Invalid input"
-    put:
-      tags:
-        - "Training"
-      summary: "Update an existing training"
-      description: ""
-      operationId: "updateTraining"
-      consumes:
-        - "application/json"
-        - "application/xml"
-      produces:
-        - "application/xml"
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          description: "Training object that needs to be added"
-          required: true
-          schema:
-            $ref: "#/definitions/Training"
-      responses:
+          description: "ok"
         400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Pet not found"
-        405:
-          description: "Validation exception"
-
-  /pet/{petId}:
+          description: "Invalid input"
     get:
       tags:
         - "Training"
-      summary: "Find pet by ID"
+      summary: "Find Training by ID"
       description: "Returns a single pet"
-      operationId: "getPetById"
+      operationId: "getTrainingById"
       produces:
-        - "application/xml"
         - "application/json"
       parameters:
-        - name: "petId"
-          in: "path"
+        - name: "trainingId"
+          in: "query"
           description: "ID of pet to return"
           required: true
-          type: "integer"
-          format: "int64"
+          type: "string"
       responses:
         200:
           description: "successful operation"
@@ -88,63 +53,59 @@ paths:
           description: "Invalid ID supplied"
         404:
           description: "Training not found"
-    post:
-      tags:
-        - "pet"
-      summary: "Updates a pet in the store with form data"
-      description: ""
-      operationId: "addBook"
-      consumes:
-        - "application/x-www-form-urlencoded"
-      produces:
-        - "application/xml"
-        - "application/json"
-      parameters:
-        - name: "petId"
-          in: "path"
-          description: "ID of pet that needs to be updated"
-          required: true
-          type: "integer"
-          format: "int64"
-        - name: "name"
-          in: "formData"
-          description: "Updated name of the pet"
-          required: false
-          type: "string"
-        - name: "status"
-          in: "formData"
-          description: "Updated status of the pet"
-          required: false
-          type: "string"
-      responses:
-        405:
-          description: "Invalid input"
-
-    delete:
+  /training/{trainingId}:
+    put:
       tags:
         - "Training"
-      summary: "Deletes a pet"
+      summary: "Update an existing training"
       description: ""
-      operationId: "deletePet"
+      operationId: "updateTraining"
+      consumes:
+        - "application/json"
       produces:
-        - "application/xml"
         - "application/json"
       parameters:
-        - name: "api_key"
-          in: "header"
-          required: false
-          type: "string"
-        - name: "petId"
-          in: "path"
-          description: "Pet id to delete"
+        - in: path
+          name: trainingId
+          type: string
+          description: The id of the movie you want to update.
           required: true
-          type: "integer"
-          format: "int64"
+        - in: body
+          name: trainingUpd
+          description: The params you want update with.
+          required: true
+          schema:
+            $ref: "#/definitions/TrainingUpd"
       responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Training"
         400:
           description: "Invalid ID supplied"
         404:
-          description: "Pet not found"
+          description: "Training not found"
+    delete:
+      tags:
+        - "Training"
+      summary: "Deletes a Training"
+      description: ""
+      operationId: "deleteTraining"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "trainingId"
+          in: "path"
+          description: "Training id to delete"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Training Deleted"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Training Id not found"
 
 definitions:
   Training:
@@ -166,17 +127,13 @@ definitions:
         example: "Give a detailed desc of Node JS training"
       resourceName:
         type: "string"
-        example: "mr Ganesh"
-  ApiResponse:
+        example: "Spiderman"
+  TrainingUpd:
     type: "object"
     properties:
-      code:
-        type: "integer"
-        format: "int32"
-      type:
+      paramName:
         type: "string"
-      message:
+        example: "resourceName"
+      paramVal:
         type: "string"
-externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
+        example: "spiderman"
